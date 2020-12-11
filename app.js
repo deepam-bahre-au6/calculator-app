@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const mongose = require('mongoose');
 require("dotenv").config();
+const indexRoutes = require('./api/routes/index');
 const userRoutes = require('./api/routes/user');
 
 // Local Database
@@ -14,7 +15,6 @@ mongose.Promise = global.Promise;
 
 // morgan is logging framework for nodejs
 app.use(morgan('dev'));
-app.use('/uploads', express.static('uploads'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use((req, res, next) => {
@@ -26,7 +26,7 @@ app.use((req, res, next) => {
     }
     next();
 })
-
+app.use('/', indexRoutes);
 app.use('/user', userRoutes);
 
 app.use((req, res, next) => {
